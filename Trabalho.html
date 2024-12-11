@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interatividade com JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light {
+      background-color: #fff;
+      color: #000;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #fff;
+    }
+    .gallery img {
+      width: 100px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .highlighted {
+      display: block;
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    .hidden {
+      display: none;
+    }
+    .form-error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body class="light">
+  <header>
+    <button id="themeToggle">Alterar Tema</button>
+  </header>
+
+  <main>
+    <section>
+      <h1>Formulário de Contato</h1>
+      <form id="contactForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+        <span class="form-error hidden" id="nameError">Nome é obrigatório.</span>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+        <span class="form-error hidden" id="emailError">E-mail inválido.</span>
+
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="formMessage" class="hidden"></p>
+    </section>
+
+    <section>
+      <h2>Interatividade</h2>
+      <button id="welcomeButton">Exibir Mensagem</button>
+      <p id="welcomeMessage" class="hidden">Promoção de farinha de trigo mes de Dezembro!</p>
+    </section>
+
+    <section>
+      <h2>PRODUTOS</h2>
+      <div class="gallery">
+        <h2>Farinha de Trigo Trigobel </h2>
+        <img src="https://www.moinhovitoria.ind.br/images/imagens-artigo/TRIGO_BEL_1kg.jpg" alt="Imagem 1">
+        <h2>Farinha de Trigo Vitella </h2>
+        <img src="https://moinhovitoria.ind.br/images/imagens-artigo/VITELLA_EXTRA.jpg" alt="Imagem 2">
+        <h2>Farinha de Trigo Una Pão de Forma </h2>
+        <img src="https://moinhovitoria.ind.br/images/imagens-artigo/UNA_PAO_DE_FORMA.jpg" alt="Imagem 3">
+      </div>
+      <img id="highlightedImage" class="highlighted hidden" alt="Imagem destacada">
+    </section>
+  </main>
+
+  <script>
+    // Alternar Tema
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      document.body.classList.toggle('light');
+    });
+
+    // Validação do Formulário
+    const form = document.getElementById('contactForm');
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('email');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const formMessage = document.getElementById('formMessage');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      let isValid = true;
+
+      if (!nameField.value) {
+        nameError.classList.remove('hidden');
+        isValid = false;
+      } else {
+        nameError.classList.add('hidden');
+      }
+
+      if (!emailField.validity.valid) {
+        emailError.classList.remove('hidden');
+        isValid = false;
+      } else {
+        emailError.classList.add('hidden');
+      }
+
+      if (isValid) {
+        formMessage.textContent = 'Formulário enviado com sucesso!';
+        formMessage.classList.remove('hidden');
+        form.reset();
+      }
+    });
+
+    // Botão de Mensagem
+    const welcomeButton = document.getElementById('welcomeButton');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    welcomeButton.addEventListener('click', () => {
+      welcomeMessage.classList.toggle('hidden');
+    });
+
+    // Galeria de Imagens
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const highlightedImage = document.getElementById('highlightedImage');
+
+    galleryImages.forEach(image => {
+      image.addEventListener('click', () => {
+        highlightedImage.src = image.src;
+        highlightedImage.classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
